@@ -1,0 +1,121 @@
+:root{
+    --bg-color: #1d2023;
+    --bg-btn: #ad1e62;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+html{
+    box-sizing: inherit;
+}
+
+a{
+    color: #fff;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
+    color: #fff;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity: 0.6;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.hr-css{
+    background-color: orange;
+    border-radius: 4px;
+    margin: 20px;
+    width: 30px;
+    height: 4px;
+}
+
+.hr-css-sm{
+    background-color: orange;
+    border-radius: 4px;
+    width: 24px;
+    height: 2px;
+    margin: 10px 0;
+}
+
+.arrow{
+    position: absolute;
+    border: 20px solid;
+    border-color: transparent transparent #858180 transparent;
+    top: -30px;
+    right: 21px;
+}
+
+.btn{
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 0 20px;
+}
+
+
+@keyframes spin{
+    from{
+        transform: rotate(0deg);
+    }
+    to{
+        transform: rotate(360deg);
+    }
+}
+
+.loading{
+    position: fixed;
+    z-index: 10;
+    height: 100vh;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading i{
+    font-size: 70px;
+    margin-top: -150px;
+    animation: spin 2s linear infinite;
+}
+
+.img-none{
+    opacity: 50%; 
+    user-select: none; 
+    pointer-events: none;
+}
+
+
+/* css khi đã login */
+.user-logged{
+    position: relative;
+}
+
+.user-logged__sub{
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    color: #000;
+    padding: 4px 20px 8px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.user-logged:hover .user-logged__sub{
+    display: block;    
+    z-index: 1;
+}
+
+.user-logged__sub a{
+    color: #000;
+}

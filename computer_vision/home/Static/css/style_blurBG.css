@@ -1,0 +1,35 @@
+.flaxbox{
+    justify-content: center;
+}
+
+.flaxbox img{
+    width: auto;
+}
+
+.blurBG_btn{
+    min-width: 100px;
+    background-color: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
+    padding: 4px 20px;
+    font-size: 10px;
+    font-weight: bold;
+    color: rgba(255, 255, 255, 0.6);
+    outline: none;
+    margin: 10px 0;
+}
+
+.img-blur-cu{
+    width: 60% !important;
+}
+
+.body-intro.changeBG .img_subject--blur{
+    max-width: none;
+    min-width: none;
+    max-height: none;
+    min-height: none;
+}
+
+.body-intro.changeBG button.btn-submit{
+    left: 1% !important;
+}

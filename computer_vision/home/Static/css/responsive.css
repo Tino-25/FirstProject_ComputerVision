@@ -1,0 +1,59 @@
+.grid {
+    width: 100%;
+    display: block;
+    padding: 0;
+}
+
+.grid.wide {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+.row-basic{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+
+@media (max-width: 1108px) {
+    .body-wrap{
+        display: flex;
+        flex-wrap: wrap-reverse;
+    }
+
+    .body-intro{
+        width: 100% !important;
+        max-width: none !important;
+    }
+    .body-wrap > div{
+        margin: 10px 2px !important;
+    }
+}
+
+@media (max-width: 689px){
+    .flaxbox{
+        overflow: hidden;
+    }
+    .flaxbox img{
+        transform: translateX(-120px);
+    }
+}
+
+@media (max-width: 480px){
+    .body-main__text{
+        position: absolute;
+        left: 50% !important;
+        top: 65% !important;
+    }
+}

@@ -1,0 +1,81 @@
+{% extends 'views/layout.html' %}
+{% load static %}
+{% block body %}
+
+{% comment %} 
+    Thẻ form này sẽ được ẩn và được sử dụng thông qua js 
+    click vào nút ở giao diện thì js sẽ gọi tới form này 
+{% endcomment %}
+<form action="#" class="form-contact" method="post" enctype="multipart/form-data" style="display: none;">
+    {% csrf_token %}
+    <label for="avatar">Ảnh đại diện</label>
+    <input type="file" id="chosse_image" name="image_input">
+    <input type="submit" id="btn_submit_image" value="Gửi">
+</form>
+
+    <div class="loading" style="display:none;">
+        <i class="fa-solid fa-spinner"></i>
+    </div>
+
+    <!-- thẻ chứa body -->
+    <div id="body">
+        <div class="row body-wrap">
+            <div class="col body-main">
+                <div class="flaxbox">
+                    {%if path_image_show %}
+                        <img src={{path_image_show}}>
+                    {% else %}
+                        <img src="{%static 'image/vna_potal_olympic_mua_dong_bac_kinh_2022_my_gianh_hcv_truot_tuyet_tu_do_vuot_doc_va_chuong_ngai_vat_cua_nam_stand.png'%}"
+                        alt="năng lượng tích cực">
+                    {% endif %}
+                </div>
+                {%if path_image_show %}
+                    <div class="body-main-bottom">
+                        <a href={{path_image_show}} class="btn btn-dowload" download>
+                            Tải ảnh
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+            <div id="image-preview"></div>
+            <div class="col body-intro body-tool changeBG">
+                <form action="/blurBG_act" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="file" style="display: none;" name="input_img_blur" id="input_img_blur" required>
+                    <div class="img_subject img_subject--blur">
+                        {% if path_image_old %}
+                            <img class="img-blur-cu" src={{path_image_old}} style="" id="show_img_blur" title="Ảnh chủ thể">
+                        {% else %}
+                            <img src="{%static 'image/image_background.png'%}" class="img-none" id="show_img_blur" style="" title="Ảnh input">
+                        {% endif %}
+                        <button class="blurBG_btn" id="btn_img_blur" type="button">Chọn ảnh</button>
+                    </div>
+                    <button class="btn-submit" type="submit"><i class="fa-solid fa-caret-left"></i></button>
+                </form>
+            </div>
+            <!-- giới thiệu -->
+            <div class="col body-intro full">
+                <h2>{{Name_Module}}</h2>
+                <div class="hr-css"></div>
+                <h4>By TinNgo</h4>
+                <p>
+                    Miễn phí và 100% tự động thay đổi BG! Chọn 1 bức ảnh nền và Bấm một lần nhấp vào Thay đổi nền tự
+                    động chỉ trong vài giây!
+                </p>
+                <p>
+                    Trạng thái nghệ thuật của chúng tôi cho phép bạn thay đổi nền từ hình ảnh sản phẩm, danh sách thương
+                    mại
+                    điện tử, ảnh tự sướng, hình ảnh hồ sơ và những người khác mà không có công việc thủ công cồng kềnh.
+                </p>
+                <div class="open-photo" id="open-photo">
+                    <!-- <input type="file" name="" id="file-input" style="display: none;"> -->
+                    <a href="#btn_img_blur">
+                        <span>Chọn ảnh</span>
+                    </a>
+                    <!-- <img id="image-preview" src="#" alt="Ảnh xem trước"> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

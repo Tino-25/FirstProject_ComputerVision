@@ -1,0 +1,110 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+html{
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.hide{
+    display: none !important;
+}
+.show{
+    display: block !important;
+}
+
+
+.main-account{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ecf0f3;
+}
+
+.wrap-form-account{
+    min-width: 60%;
+    background-color: #ecf0f3;
+    min-height: 80%;
+    box-shadow: 10px 8px 8px rgba(0, 0, 0, 0.5), -8px -8px 8px rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+}
+
+.account-left{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+.account-left__tittle{
+    font-size: 26px;
+}
+
+.account-left__text{
+    font-size: 14px;
+    margin: 40px 0;
+    color: rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.account-left__button{
+    background-color: blue;
+    text-align: center;
+    color: #fff;
+    padding: 12px 40px;
+    border-radius: 20px;
+    border: none;
+}
+
+
+.account-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.account-right__title{
+    font-size: 30px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+.account-right__form-account{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 80%;
+}
+.account-right__form-account input{
+    margin: 10px 0;
+    height: 30px;
+    padding: 0 16px;
+    border-radius: 4px;
+    outline: none;
+    border: 1px solid #ecf0f3;
+}
+
+.account-right__form-account button{
+    background-color: green;
+    border: none;
+    outline: none;
+    padding: 10px 40px;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 20px;
+    border-radius: 6px;
+}

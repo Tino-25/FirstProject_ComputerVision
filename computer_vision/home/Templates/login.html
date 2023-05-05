@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{%static 'css/bootstrap.min.css'%}">
+        <link rel="stylesheet" href="{%static 'css/responsive.css'%}">
+        <link rel="stylesheet" href="{%static 'css/login.css'%}">
+
+</head>
+
+<body>
+    {% if register_ok == 'ok' %}
+        <script>
+            alert("Đăng ký tài khoản thành công!")
+            alert("Hãy đăng nhập tài khoản vừa đăng ký để tiếp tục !")
+        </script>
+    {% endif %}
+    {% if register_ok == 'not' %}
+        <script>
+            alert("Đăng ký tài khoản không thành công!")
+            alert("Có thể lỗi do hệ thống bị sự cố !")
+        </script>
+    {% endif %}
+    {% if error_message %}
+        <script>
+            alert("Tên đăng nhập hoặc mật khẩu không đúng")
+        </script>
+    {% endif %}
+
+    <div class="main-account">
+        <div class="row-basic wrap-form-account">
+            <div class="col no-gutters c-5 account-left">
+                <h4 class="account-left__tittle">Welcome Back!</h4>
+                <span class="account-left__text">To keep connected with us please have an account with your personal
+                    infor</span>
+                <button class="account-left__button hide" id="btn-signin">Register</button>
+                <button class="account-left__button" id="btn-register">Sign In</button>
+            </div>
+            <div class="col no-gutters c-7 account-right">
+                <!-- Register  -->
+                <div class="account-form" id="register-form">
+                    <h4 class="account-right__title">Create Account</h4>
+                    <form action="/addUser" class="account-right__form-account" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="name_register" id="" placeholder="Name" required>
+                        <input type="email" name="email_register" id="" placeholder="Email" required>
+                        <input type="password" name="password_register" id="" placeholder="Password" required>
+                        <button type="submit">Sign Up</button>
+                    </form>
+                </div>
+
+                <!-- Login -->
+                <div class="account-form hide" id="login-form">
+                    <h4 class="account-right__title">Login</h4>
+                    <form action="/login_act" class="account-right__form-account" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" name="username" id="" placeholder="Username" required>
+                        <input type="password" name="password" id="" placeholder="Password" required>
+                        <button type="submit">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{%static 'js/login.js'%}" async defer></script>
+    
+</body>
+
+</html>

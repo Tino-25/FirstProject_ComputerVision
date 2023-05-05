@@ -1,0 +1,4 @@
+admin: 
+user: tinngo
+Email address: ngophitin2001@gmail.com
+pass: 123456

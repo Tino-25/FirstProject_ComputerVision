@@ -1,0 +1,98 @@
+{% extends 'views/layout.html' %}
+{% load static %}
+{% block body %}
+
+    {% comment %} 
+    Thẻ form này sẽ được ẩn và được sử dụng thông qua js 
+    click vào nút ở giao diện thì js sẽ gọi tới form này 
+    {% endcomment %}
+    <form action="/removeBG_act" class="form-contact" method="post" enctype="multipart/form-data" style="display: none;">
+        {% csrf_token %}
+        <label for="avatar">Ảnh đại diện</label>
+        <input type="file" id="chosse_image" name="image_input">
+        <input type="submit" id="btn_submit_image" value="Gửi">
+    </form>
+
+    <!-- thẻ chứa body -->
+    <div id="body">
+        <div class="row body-wrap">
+            <div class="col body-main">
+                <div class="body-main-top">
+                    <div class="wrap-border">
+                        <a href="removeBG_act_chooseBG?bg_color=999">
+                            <div class="bg background-transparent">
+                                <span class="explain-text">BG trong suốt</span>
+                                <div class="arrow"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="wrap-border active">
+                        <a href="removeBG_act_chooseBG?bg_color=255">
+                            <div class="bg background-white">
+                                <span class="explain-text">BG trắng</span>
+                                <div class="arrow"></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="wrap-border">
+                        <a href="removeBG_act_chooseBG?bg_color=0">
+                            <div class="bg background-black">
+                                <span class="explain-text">BG đen</span>
+                                <div class="arrow"></div>
+                            </div>
+                        </a>
+                    </div>
+                    {% comment %} Nút đổi nền ảnh {% endcomment %}
+                    {% comment %} <div class="wrap-border">
+                        <a href="#">
+                            <div class="bg background-img">
+                                <span class="explain-text">BG image</span>
+                                <div class="arrow"></div>
+                            </div>
+                        </a>
+                    </div> {% endcomment %}
+                </div>
+                <div class="body-main-body">
+                    <img src={{path_image_show}} class="frame-image">
+                        <div class="loading loading_image" style="display: none;">
+                            <i class="fa-solid fa-spinner"></i>
+                        </div>
+                    </img>
+                    <div class="btn-add-img" id="select-image-btn">
+                        <i class="fa-solid fa-plus"></i>
+                        <br/>
+                        <br/>
+                        <p>Chọn ảnh mới</p>
+                    </div>
+                </div>
+                <div class="body-main-bottom">
+                    <a href={{path_image_show}} class="btn btn-dowload" download>
+                        Tải ảnh
+                    </a>
+                    <a href="close_all" class="btn btn-close">
+                        Đóng tất cả
+                    </a>
+                </div>
+            </div>
+            <div class="col body-intro">
+                <h2>Xóa nền ảnh</h2>
+                <div class="hr-css"></div>
+                <h4>By TinNgo</h4>
+                <p>
+                    Miễn phí và 100% tự động loại bỏ BG! Bấm một lần nhấp vào Xóa nền tự động chỉ trong vài giây!
+                </p>
+                <p>
+                    Trạng thái nghệ thuật của chúng tôi cho phép bạn xóa nền từ hình ảnh sản phẩm, danh sách thương mại
+                    điện tử, ảnh tự sướng, hình ảnh hồ sơ và những người khác mà không có công việc thủ công cồng kềnh.
+                   
+                </p>
+                <div class="open-photo" id="open-photo">
+                    <!-- <input type="file" name="" id="file-input" style="display: none;"> -->
+                    <span>Chọn ảnh</span>
+                    <!-- <img id="image-preview" src="#" alt="Ảnh xem trước"> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

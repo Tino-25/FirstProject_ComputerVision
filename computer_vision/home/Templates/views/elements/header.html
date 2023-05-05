@@ -1,0 +1,119 @@
+<div id="header">
+    <div class="header-logo">
+        <a href='/'>
+            <img src="https://pixlr.com/img/misc/bg-icon.svg" alt="Logo Remove BG" title="VKU Remove BG">
+            {{Name_Module}}
+        </a>
+    </div>
+    <div class="header-account">
+        {% if username %}
+            <div class="user-logged">
+                {{username}}
+                <div class="user-logged__sub">
+                    <a href="/logout_act">Logout</a>
+                </div>
+            </div>
+        {% else %}
+            <a href="/login">
+                <i class="fa-solid fa-user"></i>
+                Đăng ký đăng nhập
+            </a>
+        {% endif %}
+    </div>
+    <div class="header-prenium">
+        <a href="#">
+            <i class="fa-solid fa-crown"></i>
+            Try prenium
+        </a>
+    </div>
+    <div class="header-bell">
+        <a href="#">
+            <i class="fa-solid fa-bell"></i>
+        </a>
+    </div>
+    <div class="header-list">
+        <a href="#">
+            <i class="fa-solid fa-list"></i>
+        </a>
+
+        <!-- hover sẽ hiện ra -->
+        <div class="menu">
+            <div class="arrow">
+            </div>
+            <h4 class="menu-title">
+                ứng dụng web
+            </h4>
+            <div class="hr-css-sm"></div>
+            <div class="row-basic list-app">
+                <!-- item -->
+                <div class="c-6">
+                    <a href="removeBG">
+                        <div class="list-app__item">
+                            <img src="https://pixlr.com/img/misc/bg-icon.svg" alt="">
+                            <h6>Remove BG</h6>
+                        </div>
+                    </a>
+                </div>
+                <!-- item -->
+                <div class="c-6">
+                    <a href="changeBG">
+                        <div class="list-app__item">
+                            <img src="https://pixlr.com/img/misc/bg-icon.svg" alt="">
+                            <h6>Change BG</h6>
+                        </div>
+                    </a>
+                </div>
+                <!-- item -->
+                <div class="c-6">
+                    <a href="blurBG">
+                        <div class="list-app__item">
+                            <img src="https://pixlr.com/img/misc/bg-icon.svg" alt="">
+                            <h6>Blur BG</h6>
+                        </div>
+                    </a>
+                </div>
+                <!-- item -->
+                <div class="c-6">
+                    <a href="grayBG">
+                        <div class="list-app__item">
+                            <img src="https://pixlr.com/img/misc/bg-icon.svg" alt="">
+                            <h6>Gray BG</h6>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            
+            <br/>
+            <!-- menu part 2 -->
+            <h4 class="menu-title">
+                Trợ giúp & học hỏi
+            </h4>
+            <div class="hr-css-sm"></div>
+            <div class="row-basic list-app">
+                <!-- item -->
+                <div class="c-6">
+                    <div class="list-app__item">
+                        <i class="fa-brands fa-youtube"></i>
+                        <h6>Video hướng dẫn</h6>
+                    </div>
+                </div>
+                <!-- item -->
+                <div class="c-6">
+                    <div class="list-app__item">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        <h6>Tìm hiểu & giáo dục</h6>
+                    </div>
+                </div>
+                <!-- item -->
+                <div class="c-6">
+                    <div class="list-app__item">
+                        <i class="fa-solid fa-question"></i>
+                        <h6>Liên hệ hỗ trợ</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</div>
