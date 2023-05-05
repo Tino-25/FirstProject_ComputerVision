@@ -92,4 +92,35 @@ def create_folder_user(id, username):
         print("Thư mục đã tồn tại!")
 
 
-    
+
+
+
+def get_history(request):
+    if request.user.is_authenticated:
+        username = request.user.username  # lấy tên người dùng đã đăng nhập
+        id_user = request.user.id
+        list_removeBG = show_all_img_history_infolder(request, id_user, username, 'removeBG')
+        list_changeBG = show_all_img_history_infolder(request, id_user, username, 'changeBG')
+        list_blurBG = show_all_img_history_infolder(request, id_user, username, 'blurBG')
+        list_grayBG = show_all_img_history_infolder(request, id_user, username, 'grayBG')
+
+
+        return render(request, 'history.html', {'username': username,\
+                                                'list_removeBG': list_removeBG, \
+                                                'list_changeBG': list_changeBG, \
+                                                'list_blurBG': list_blurBG, \
+                                                'list_grayBG': list_grayBG, \
+                                                    })
+    return render(request, 'history.html')
+
+
+def show_all_img_history_infolder(request, id, username, tool):
+    name_folder = str(id)+"_"+username
+    folder_path = "home/static/image/user_image/"+name_folder+"/"+tool
+    folder_show_html = "../static/image/user_image/"+name_folder+"/"+tool+"/"
+    files = os.listdir(folder_path)
+    list_path_history = []
+    for file in files:
+        print(file)
+        list_path_history.append(folder_show_html + file)
+    return list_path_history

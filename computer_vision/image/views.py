@@ -288,3 +288,4 @@ def gray_background(request):
 def save_img_history(request, tool, filename, img):
     name_folder = str(request.user.id)+"_"+request.user.username
     cv2.imwrite("home/static/image/user_image/"+name_folder+"/"+str(tool)+"/" + filename, img.astype('uint8'))
+

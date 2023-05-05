@@ -45,6 +45,8 @@ urlpatterns = [
     path('addUser', user.add_user),
     path('login_act', user.login_user),
     path('logout_act', user.logout_user),
+
+    path('history', user.get_history),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 admin.site.site_header = "Quản lý"
 
