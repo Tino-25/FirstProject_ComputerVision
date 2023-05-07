@@ -30,6 +30,7 @@ urlpatterns = [
     path('removeBG', img.get_removeBG),
     path('removeBG_act', img.remove_background),
     path('removeBG_act_chooseBG', img.remove_background_chooseBG),
+    path('removeBG_act_chooseMainBG', img.remove_background_chooseLabels),
     path('close_all', img.close_all_image),
     # thay đổi nền ảnh
     path('changeBG', img.get_changeBG),
@@ -37,9 +38,11 @@ urlpatterns = [
     # làm mờ nền hình ảnh
     path('blurBG', img.get_blurBG),
     path('blurBG_act', img.blur_background),
+    path('blurBG_choose_Label', img.blur_background),   
     # làm xám nền ảnh
     path('grayBG', img.get_grayBG),
     path('grayBG_act', img.gray_background),
+    path('grayBG_choose_Label', img.gray_background), 
     # đăng nhập, đăng ký
     path('login', user.get_login),
     path('addUser', user.add_user),

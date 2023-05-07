@@ -87,12 +87,17 @@ def remove_background(request):
     input.save(path_get_common + file_name)
     object_BG.pathImg_removeBG.setPath(path_get_common + file_name)
 
-    if request.GET.get('bg_color') != None:
-        bg_color = request.GET.get('bg_color')
-        bg_color = int(bg_color)
-        rgb = module_removeBG.segment(module_removeBG.dlab, path_get_common + file_name, color_bg = bg_color, show_orig=False)
-    else:
-        rgb = module_removeBG.segment(module_removeBG.dlab, path_get_common + file_name, color_bg = 255, show_orig=False)
+    # if request.GET.get('bg_color') != None:
+    #     bg_color = request.GET.get('bg_color')
+    #     bg_color = int(bg_color)
+    #     # if request.GET.get('labels_main') != None:
+    #     #     labels_main = request.GET.get('labels_main')   # label main là để chọn nhãn chính và xóa nhãn còn lại
+    #     #     rgb, unique_labels = module_removeBG.segment(module_removeBG.dlab, path_get_common + file_name, color_bg = bg_color, labels_main=labels_main, show_orig=False)
+    #     # else:
+    #     rgb, unique_labels = module_removeBG.segment(module_removeBG.dlab, path_get_common + file_name, color_bg = bg_color, show_orig=False)
+    # else:
+    #     rgb, unique_labels = module_removeBG.segment(module_removeBG.dlab, path_get_common + file_name, color_bg = 255, show_orig=False)
+    rgb, unique_labels = module_removeBG.segment(module_removeBG.dlab, path_get_common + file_name, color_bg = 255, show_orig=False)
 
     rgb_new = (rgb * 255).astype('uint8')
     brg = cv2.cvtColor(rgb_new, cv2.COLOR_BGR2RGB)
@@ -105,15 +110,48 @@ def remove_background(request):
 
     path_image_show = path_show_removeBG + filename
 
-    return render(request, 'removeBG_result.html', {'path_image_show': path_image_show, 'Name_Module': 'removeBG'})
+    return render(request, 'removeBG_result.html', {'path_image_show': path_image_show, 'Name_Module': 'removeBG', 'unique_labels': unique_labels, 'bg_color': 255})
 
 # remove background lần 2 - kiểu đổi nền ảnh thành đen hoặc trắng hoặc không còn nền
 def remove_background_chooseBG(request):
     if request.GET.get('bg_color') != None:
         bg_color = request.GET.get('bg_color')
         bg_color = int(bg_color)
-        if bg_color != 999:
-            rgb = module_removeBG.segment(module_removeBG.dlab, object_BG.pathImg_removeBG.getPath(), color_bg = bg_color, show_orig=False)
+        if bg_color != 999:     # nghĩa là không phải nền trong suốt  
+            rgb, unique_labels = module_removeBG.segment(module_removeBG.dlab, object_BG.pathImg_removeBG.getPath(), color_bg = bg_color, show_orig=False)
+            rgb_new = (rgb * 255).astype('uint8')
+            brg = cv2.cvtColor(rgb_new, cv2.COLOR_BGR2RGB)
+            filename = str(uuid.uuid4()) + '.png'
+            path_image_save = path_save_removeBG + filename
+            cv2.imwrite(path_image_save, brg.astype('uint8'))
+            # save lịch sử
+            save_img_history(request ,'removeBG', filename, brg.astype('uint8'))
+        else:
+            unique_labels = []
+            input = Image.open(str(object_BG.pathImg_removeBG.getPath()))
+            output = rembg.remove(input)
+            # đặt tên ảnh random
+            filename = str(uuid.uuid4()) + '.png'
+            path_image_save = path_save_removeBG + filename
+            output.save(path_image_save)
+            # save lịch sử
+            name_folder = str(request.user.id)+"_"+request.user.username
+            output.save("home/static/image/user_image/"+name_folder+"/removeBG/" + filename)
+ 
+        path_image_show = path_show_removeBG + filename
+    return render(request, 'removeBG_result.html', {'path_image_show': path_image_show, 'Name_Module': 'removeBG', 'unique_labels': unique_labels, 'bg_color': bg_color})
+
+
+# remove background lần 3 - Chọn labels chính để hiển thị
+def remove_background_chooseLabels(request):
+    if request.GET.get('labels_main') != None:
+        labels_index_main = int(request.GET.get('labels_main'))   # label main là để chọn nhãn chính và xóa nhãn còn lại
+
+    if request.GET.get('bg_color') != None:
+        bg_color = request.GET.get('bg_color')
+        bg_color = int(bg_color)
+        if bg_color != 999:     # nghĩa là không phải nền trong suốt  
+            rgb, unique_labels = module_removeBG.segment(module_removeBG.dlab, object_BG.pathImg_removeBG.getPath(), color_bg = bg_color,labels_main=labels_index_main, show_orig=False)
             rgb_new = (rgb * 255).astype('uint8')
             brg = cv2.cvtColor(rgb_new, cv2.COLOR_BGR2RGB)
             filename = str(uuid.uuid4()) + '.png'
@@ -133,25 +171,27 @@ def remove_background_chooseBG(request):
             output.save("home/static/image/user_image/"+name_folder+"/removeBG/" + filename)
  
         path_image_show = path_show_removeBG + filename
-    return render(request, 'removeBG_result.html', {'path_image_show': path_image_show})
+    return render(request, 'removeBG_result.html', {'path_image_show': path_image_show, 'Name_Module': 'removeBG', 'unique_labels': unique_labels, 'bg_color': bg_color})
+
+
 
 #  xóa nền ảnh dùng thư viện rembg
-def remove_background_rembg(request):
-    # Get the uploaded image from the request
-    uploaded_image = request.FILES['image_input']
+# def remove_background_rembg(request):
+#     # Get the uploaded image from the request
+#     uploaded_image = request.FILES['image_input']
 
-    input = Image.open(uploaded_image)
-    output = rembg.remove(input)
+#     input = Image.open(uploaded_image)
+#     output = rembg.remove(input)
 
-    # đặt tên ảnh random
-    filename = str(uuid.uuid4()) + '.png'
-    path_image_save = path_save_removeBG + filename
-    output.save(path_image_save)
+#     # đặt tên ảnh random
+#     filename = str(uuid.uuid4()) + '.png'
+#     path_image_save = path_save_removeBG + filename
+#     output.save(path_image_save)
 
-    # lấy đường dẫn để có thể hiển thị ảnh theo path - vì path hiển thị thẻ img khác với path lưu ảnh
-    path_image_show = path_show_removeBG + filename
+#     # lấy đường dẫn để có thể hiển thị ảnh theo path - vì path hiển thị thẻ img khác với path lưu ảnh
+#     path_image_show = path_show_removeBG + filename
 
-    return render(request, 'removeBG_result.html', {'path_image_show': path_image_show})
+#     return render(request, 'removeBG_result.html', {'path_image_show': path_image_show})
 
 
 # THAY ĐỔI NỀN HÌNH ẢNH
@@ -211,18 +251,28 @@ def get_blurBG(request):
     return render(request, 'blurBG.html', {'Name_Module': 'blurBG'})
 
 def blur_background(request):
-    delete_all_image_infolder()
-        
-    # lưu ảnh subject
-    uploaded_image = request.FILES['input_img_blur']
-    input = Image.open(uploaded_image)
-    file_name = uploaded_image.name
-    input.save(path_tailen_common + file_name)
-    object_BG.pathImg_blurBG.setPath(path_tailen_common + file_name)
+    # delete_all_image_infolder()
+    labels_index_main = 0
+    if request.GET.get('labels_main') != None:
+        labels_index_main = int(request.GET.get('labels_main'))   # label main là để chọn nhãn chính và xóa nhãn còn lại
 
+    uploaded_image = request.FILES.get('input_img_blur', None)
+    if uploaded_image is not None:
+        # lưu ảnh subject
+        # uploaded_image = request.FILES['input_img_blur']
+        input = Image.open(uploaded_image)
+        file_name = uploaded_image.name
+        input.save(path_tailen_common + file_name)
+        object_BG.pathImg_blurBG.setPath(path_tailen_common + file_name)
+    else:
+        uploaded_image =  object_BG.pathImg_blurBG.getPath()
+        input = Image.open(uploaded_image)
+        # file_name = uploaded_image.name
+        file_name = str(uuid.uuid4()) + '.png'
+        input.save(path_tailen_common + file_name)
+        object_BG.pathImg_blurBG.setPath(path_tailen_common + file_name)
 
-    rgb = module_blurBG.segment(module_blurBG.dlab, path_tailen_common + file_name, show_orig=False)
-
+    rgb, unique_labels = module_blurBG.segment(module_blurBG.dlab, path_tailen_common + file_name, labels_main=labels_index_main, show_orig=False)
 
     rgb_new = (rgb * 255).astype('uint8')
     brg = cv2.cvtColor(rgb_new, cv2.COLOR_BGR2RGB)
@@ -237,7 +287,8 @@ def blur_background(request):
     return render(request, 'blurBG.html', {'path_image_show': path_image_show, \
                                             'path_image_old': str("../static/image/preProcessing/" + file_name), \
                                             'path_image_blur': str("../static/image/blurBG/" + filename), \
-                                            'Name_Module': 'blurBG'})
+                                            'Name_Module': 'blurBG', \
+                                            'unique_labels': unique_labels})
 
 
 
@@ -253,17 +304,27 @@ def get_grayBG(request):
     return render(request, 'gray_scaleBG.html', {'Name_Module': 'gray_scaleBG'})
 
 def gray_background(request):
-    delete_all_image_infolder()
-        
-    # lưu ảnh subject
-    uploaded_image = request.FILES['input_img_gray']
-    input = Image.open(uploaded_image)
-    file_name = uploaded_image.name
-    input.save(path_tailen_common + file_name)
-    object_BG.pathImg_grayBG.setPath(path_tailen_common + file_name)
+    # delete_all_image_infolder()
+    labels_index_main = 0
+    if request.GET.get('labels_main') != None:
+        labels_index_main = int(request.GET.get('labels_main'))   # label main là để chọn nhãn chính và xóa nhãn còn lại
+    
+    uploaded_image = request.FILES.get('input_img_gray', None)
+    if uploaded_image is not None:
+        # lưu ảnh subject
+        uploaded_image = request.FILES['input_img_gray']
+        input = Image.open(uploaded_image)
+        file_name = uploaded_image.name
+        input.save(path_tailen_common + file_name)
+        object_BG.pathImg_grayBG.setPath(path_tailen_common + file_name)
+    else:
+        uploaded_image =  object_BG.pathImg_grayBG.getPath()
+        input = Image.open(uploaded_image)
+        file_name = str(uuid.uuid4()) + '.png'
+        input.save(path_tailen_common + file_name)
+        object_BG.pathImg_grayBG.setPath(path_tailen_common + file_name)
 
-
-    rgb = module_gray.segment(module_gray.dlab, path_tailen_common + file_name, show_orig=False)
+    rgb, unique_labels = module_gray.segment(module_gray.dlab, path_tailen_common + file_name, labels_main=labels_index_main, show_orig=False)
 
 
     rgb_new = (rgb * 255).astype('uint8')
@@ -279,8 +340,8 @@ def gray_background(request):
     return render(request, 'gray_scaleBG.html', {'path_image_show': path_image_show, \
                                             'path_image_old': str("../static/image/preProcessing/" + file_name), \
                                             'path_image_gray': str("../static/image/grayBG/" + filename), \
-                                            'Name_Module': 'grayBG'})
-
+                                            'Name_Module': 'grayBG', \
+                                            'unique_labels': unique_labels})
 
 
 

@@ -500,6 +500,10 @@ body{
     margin: 10px 0;
 }
 
+.body-main-bottom span{
+    line-height: 44px;
+}
+
 .body-main-bottom a{
     margin: 4px;
     padding: 4px 20px;

@@ -31,6 +31,14 @@
                 </div>
                 {%if path_image_show %}
                     <div class="body-main-bottom">
+                        <span title="Click vào 1 đối tượng mà bạn muốn làm chủ">
+                            &emsp; labels: &ensp;
+                            {% comment %} i là index nhãn, j là text nhãn {% endcomment %}
+                            {% for i, j in unique_labels%}
+                                {% comment %} {{i}}, {{j}} {% endcomment %}
+                                <a href="blurBG_choose_Label?labels_main={{i}}">{{j}}</a>
+                            {% endfor %}
+                        </span>
                         <a href={{path_image_show}} class="btn btn-dowload" download>
                             Tải ảnh
                         </a>

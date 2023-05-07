@@ -66,8 +66,16 @@
                     </div>
                 </div>
                 <div class="body-main-bottom">
+                    <span title="Click vào 1 đối tượng mà bạn muốn làm chủ">
+                        &emsp; labels: &ensp;
+                        {% comment %} i là index nhãn, j là text nhãn {% endcomment %}
+                        {% for i, j in unique_labels%}
+                            {% comment %} {{i}}, {{j}} {% endcomment %}
+                            <a href="removeBG_act_chooseMainBG?bg_color={{bg_color}}&labels_main={{i}}">{{j}}</a>
+                        {% endfor %}
+                    </span>
                     <a href={{path_image_show}} class="btn btn-dowload" download>
-                        Tải ảnh
+                        Tải ảnh {{bg_color}}
                     </a>
                     <a href="close_all" class="btn btn-close">
                         Đóng tất cả
@@ -77,7 +85,7 @@
             <div class="col body-intro">
                 <h2>Xóa nền ảnh</h2>
                 <div class="hr-css"></div>
-                <h4>By TinNgo</h4>
+                <h4> By TinNgo </h4>
                 <p>
                     Miễn phí và 100% tự động loại bỏ BG! Bấm một lần nhấp vào Xóa nền tự động chỉ trong vài giây!
                 </p>

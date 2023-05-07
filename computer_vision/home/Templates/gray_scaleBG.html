@@ -31,6 +31,14 @@
                 </div>
                 {%if path_image_show %}
                     <div class="body-main-bottom">
+                        <span title="Click vào 1 đối tượng mà bạn muốn làm chủ">
+                            &emsp; labels: &ensp;
+                            {% comment %} i là index nhãn, j là text nhãn {% endcomment %}
+                            {% for i, j in unique_labels%}
+                                {% comment %} {{i}}, {{j}} {% endcomment %}
+                                <a href="grayBG_choose_Label?labels_main={{i}}">{{j}}</a>
+                            {% endfor %}
+                        </span>
                         <a href={{path_image_show}} class="btn btn-dowload" download>
                             Tải ảnh
                         </a>
@@ -44,7 +52,7 @@
                     <input type="file" style="display: none;" name="input_img_gray" id="input_img_gray" required>
                     <div class="img_subject">
                         {% if path_image_old %}
-                            <img class="img-blur-cu" src={{path_image_old}} style="" title="Ảnh chủ thể">
+                            <img class="img-blur-cu" src={{path_image_old}} style="" id="show_img_gray" title="Ảnh chủ thể">
                         {% else %}
                             <img src="{%static 'image/image_background.png'%}" class="img-none" id="show_img_gray" style="" title="Ảnh input">
                         {% endif %}

@@ -39,6 +39,7 @@
     padding: 0 10px 0 10px;
     overflow-y: scroll;
     max-height: 390px;
+    width: 100% !important;
     flex-grow: 1;
     scrollbar-color: #6969dd #e0e0e0;
     scrollbar-width: thin;

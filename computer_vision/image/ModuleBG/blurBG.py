@@ -16,17 +16,27 @@ import cv2
 import torchvision.transforms as T
 # import chardet
 
+from . import common
+
+
 # Define the helper function
 def decode_segmap(image, source, nc=21):
+    # label_colors = np.array([(0, 0, 0),  # 0=background
+    #                          # 1=aeroplane, 2=bicycle, 3=bird, 4=boat, 5=bottle
+    #                          (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128),
+    #                          # 6=bus, 7=car, 8=cat, 9=chair, 10=cow
+    #                          (0, 128, 128), (128, 128, 128), (64, 0, 0), (192, 0, 0), (64, 128, 0),
+    #                          # 11=dining table, 12=dog, 13=horse, 14=motorbike, 15=person
+    #                          (192, 128, 0), (64, 0, 128), (192, 0, 128), (64, 128, 128), (192, 128, 128),
+    #                          # 16=potted plant, 17=sheep, 18=sofa, 19=train, 20=tv/monitor
+    #                          (0, 64, 0), (128, 64, 0), (0, 192, 0), (128, 192, 0), (0, 64, 128)])
+    # đổi thành cùng như vậy là vì khi thử nghiệm thì thấy như vậy mới hiện rõ được đối tượng
     label_colors = np.array([(0, 0, 0),  # 0=background
-                             # 1=aeroplane, 2=bicycle, 3=bird, 4=boat, 5=bottle
-                             (128, 0, 0), (0, 128, 0), (128, 128, 0), (0, 0, 128), (128, 0, 128),
-                             # 6=bus, 7=car, 8=cat, 9=chair, 10=cow
-                             (0, 128, 128), (128, 128, 128), (64, 0, 0), (192, 0, 0), (64, 128, 0),
-                             # 11=dining table, 12=dog, 13=horse, 14=motorbike, 15=person
-                             (192, 128, 0), (64, 0, 128), (192, 0, 128), (64, 128, 128), (192, 128, 128),
-                             # 16=potted plant, 17=sheep, 18=sofa, 19=train, 20=tv/monitor
-                             (0, 64, 0), (128, 64, 0), (0, 192, 0), (128, 192, 0), (0, 64, 128)])
+                            (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), 
+                            (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), 
+                            (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), 
+                            (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), (192, 128, 128), ])
+
 
     r = np.zeros_like(image).astype(np.uint8)
     g = np.zeros_like(image).astype(np.uint8)
@@ -77,7 +87,7 @@ def decode_segmap(image, source, nc=21):
     return outImage / 255
 
 
-def segment(net, path, show_orig=True, dev='cpu'):
+def segment(net, path, show_orig=True, labels_main = 0, dev='cpu'):
     img = Image.open(path)
 
     if show_orig: plt.imshow(img); plt.axis('off'); plt.show()
@@ -91,12 +101,28 @@ def segment(net, path, show_orig=True, dev='cpu'):
     out = net.to(dev)(inp)['out']
     om = torch.argmax(out.squeeze(), dim=0).detach().cpu().numpy()
 
-    rgb = decode_segmap(om, path)
 
+    # nhận tất cả các nhãn trong ảnh đã phân đoạn
+    unique_labels_index = np.unique(om)
+    unique_labels_index=np.delete(unique_labels_index, np.where(unique_labels_index == 0))   # xóa só 0 trong unique_labels_index
+    print("các nhãn trong ma trận om, ảnh om là: ", unique_labels_index)
+    unique_labels = common.get_labels_from_index(unique_labels_index)
+
+    print("labels_main nhận được là: ",labels_main)
+    # Xóa bớt nhãn có giá trị 8 (là cat)
+    # to_remove = [8, 3]        # số cần xóa là 8 và 3
+    if labels_main!=0:   # vì labels_main mặc định = 0 và nếu có truyền vào thì sẽ thực hiện
+        to_remove = common.no_get_only_index(unique_labels_index, labels_main)   # không lấy index = labels_main - để xóa các index còn lại
+        idx = np.where(np.isin(om, to_remove))
+        om[idx] = 0
+
+
+    rgb = decode_segmap(om, path)
+    print(zip(unique_labels_index, unique_labels))
     # plt.imshow(rgb);
     # plt.axis('off');
     # plt.show()
-    return rgb
+    return rgb, zip(unique_labels_index, unique_labels)
 
 
 # sử dụng thư viện PyTorch để tải một mô hình phân đoạn (segmentation) đã được huấn luyện sẵn,
